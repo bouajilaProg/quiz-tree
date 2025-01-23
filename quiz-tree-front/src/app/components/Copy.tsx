@@ -16,7 +16,7 @@ const Copy = () => {
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               Learning and Revision
             </h2>
-            <p className="text-base text-justify md:text-right md:text-lg text-gray-700">
+            <p className="text-base text-justify md:text-left md:text-lg text-gray-700">
               With Quiz Tree, you can  revise and learn new concepts
               while practicing exercises. Our platform provides a variety of
               quizzes tailored to enhance your knowledge.
