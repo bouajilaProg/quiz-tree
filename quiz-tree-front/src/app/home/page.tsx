@@ -1,6 +1,6 @@
 import React from 'react';
-import QuizItem from './components/quizItem';
 import { t_quizHeader } from '../types/quizItem';
+import QuizItem from '@/components/commun/quizItem';
 
 function Home() {
 
