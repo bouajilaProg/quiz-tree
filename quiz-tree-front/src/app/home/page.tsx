@@ -25,7 +25,7 @@ function Home() {
 
 
   return (
-    <div className="p-4 flex justify-center">
+    <div className="p-4 flex justify-center min-h-screen">
       <div className='lg:max-w-[90%]'>
         {/* Recent Section */}
         <div className="mb-8">

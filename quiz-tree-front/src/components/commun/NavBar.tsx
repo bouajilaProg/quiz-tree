@@ -6,7 +6,7 @@ const NavBar = () => {
   const [loggedIn, setLoggedIn] = React.useState<boolean>(true);
 
   return (
-    <nav className="bg-gray-900 p-4 lg:px-0">
+    <nav className="bg-gray-900 p-4 lg:px-0 sticky w-full top-0">
       <div className="flex justify-between items-center lg:mx-28">
         <h1 className="text-white text-2xl font-bold">Quiz Tree</h1>
 
@@ -25,7 +25,7 @@ const NavBar = () => {
                 <FaSearch className="text-gray-400 block mr-2 md:hidden" />
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search"
                   className="bg-transparent text-white outline-none placeholder-gray-500"
                 />
               </div>
