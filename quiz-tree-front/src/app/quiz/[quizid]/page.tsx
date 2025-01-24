@@ -25,7 +25,7 @@ const QuizPage: React.FC = () => {
 
       {/* Mobile and Medium Screens */}
       <div className="w-full lg:hidden flex flex-col items-center mt-6">
-        <div className="w-64 h-40 bg-gray-300 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"></div> {/* Placeholder Image */}
+        <img src='https://placehold.co/600x400' className="rounded-lg w-[300] h-[200] md:h-[400px] md:w-[600px] shadow-md hover:shadow-xl transition-all duration-300" />
         <div className="w-full mt-6 flex flex-col gap-4 md:text-center">
           {["Option 1", "Option 2", "Option 3", "Option 4"].map((option, index) => (
             <label key={index} className="flex items-center gap-2   justify-between hover:bg-gray-100 rounded-lg p-3 transition-all duration-300">
@@ -56,9 +56,7 @@ const QuizPage: React.FC = () => {
             Submit
           </button>
         </div>
-        <div className="w-1/2 flex justify-center">
-          <div className="w-96 h-80 bg-gray-300 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"></div> {/* Placeholder Image */}
-        </div>
+        <img src='https://placehold.co/600x400' className="rounded-lg h-[400px] w-[600px] shadow-md hover:shadow-xl transition-all duration-300" />
       </div>
     </div>
   );
