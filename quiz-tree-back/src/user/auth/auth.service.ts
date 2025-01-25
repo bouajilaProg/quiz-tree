@@ -22,7 +22,7 @@ export class AuthService {
     if (!user) {
       throw new Error('Invalid credentials');
     }
-    return { token: this.jwtService.sign({ user: user.username }) };
+    return { token: this.jwtService.sign({ user: user.username }), username: user.username };
   }
 
   // function to signup 
@@ -37,7 +37,7 @@ export class AuthService {
     }
 
     this.userModel.create({ email, password, username })
-    return { token: this.jwtService.sign({ user: username }) };
+    return { token: this.jwtService.sign({ user: username }), username: username };
   }
 
   // function to get the user name from the token

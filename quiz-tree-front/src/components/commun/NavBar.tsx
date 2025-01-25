@@ -1,9 +1,20 @@
 "use client";
-import React from "react";
+import { userContext } from "@/app/contexts/userProvider";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { FaSearch, FaUser } from "react-icons/fa";
 
 const NavBar = () => {
-  const [loggedIn, setLoggedIn] = React.useState<boolean>(true);
+  const { user, setUser } = useContext(userContext); // Get context values
+  const [loggedIn, setLoggedIn] = useState<boolean>(false); // Default to false, not logged in
+
+  if (user && !loggedIn) {
+    setLoggedIn(true); // If user is set, set logged in to true
+  } else {
+    if (loggedIn && !user) {
+      setLoggedIn(false); // If user is not set, set logged in to false
+    }
+  }
 
   return (
     <nav className="bg-gray-900 p-4 lg:px-0 sticky w-full top-0">
