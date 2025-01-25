@@ -6,3 +6,17 @@ export interface t_quizHeader {
   questionsCount: number;
   avgScore: number;
 }
+
+
+//quiz question
+export interface t_quizQuestion {
+  question: string;
+  options: string[];
+  correctOption: number[];
+}
+
+
+export interface t_quizItem {
+  header: t_quizHeader;
+  questions: t_quizQuestion[];
+}
