@@ -5,7 +5,21 @@ interface QuizItemProps {
   quizHeader: t_quizHeader;
 }
 
+
+
+const difficultyColors: Record<string, string> = {
+  Easy: "bg-green-500",
+  Medium: "bg-yellow-500",
+  Hard: "bg-red-500",
+};
+
+
 function QuizItem({ quizHeader }: QuizItemProps) {
+
+
+
+  console.log(difficultyColors[quizHeader.difficulty]);
+
   return (
     <div className="w-full md:w-72 p-4 bg-white border border-gray-300 rounded-md shadow-sm">
       {/* First Line */}
@@ -17,7 +31,11 @@ function QuizItem({ quizHeader }: QuizItemProps) {
           <span className="text-sm text-gray-500">#{quizHeader.code}</span>
 
         </div>
-        <span className="text-xs bg-red-500 text-white py-1 px-2 rounded-full">{quizHeader.difficulty}</span>
+
+        <span className={`text-xs text-white py-1 px-2 rounded-full ${difficultyColors[quizHeader.difficulty]}`}>
+          {quizHeader.difficulty}
+        </span>
+
       </div>
 
       {/* Second Line */}

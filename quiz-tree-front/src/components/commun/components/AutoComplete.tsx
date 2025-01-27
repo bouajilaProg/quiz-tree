@@ -2,16 +2,24 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-const AutoComplete = () => {
-  const [query, setQuery] = useState("");
-  const suggestions = ["React", "NestJS", "Next.js", "Django", "MongoDB"];
+
+interface AutoCompleteProps {
+  searchData: string[];
+
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+const AutoComplete = ({ searchData, setSearchQuery, searchQuery }: AutoCompleteProps) => {
 
   // Filtered results based on input
-  const filtered = query
-    ? suggestions.filter((item) => item.toLowerCase().includes(query.toLowerCase()))
+  const filtered = searchQuery
+    ? searchData.filter((item) => item.toLowerCase().includes(searchQuery.toLowerCase()))
     : [];
 
   const [open, setOpen] = useState(false);
+
+
 
 
 
@@ -21,8 +29,8 @@ const AutoComplete = () => {
     <div className="relative w-48 border border-gray-700 rounded-t-lg ">
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search"
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
@@ -34,7 +42,7 @@ const AutoComplete = () => {
             <Link
               href={`/search?query=${item}`}
               key={item}
-              onClick={() => setQuery(item)}
+              onClick={() => setSearchQuery(item)}
               className="block w-full py-2 px-2 text-gray-300 hover:bg-gray-700 cursor-pointer"
             >
               {item}

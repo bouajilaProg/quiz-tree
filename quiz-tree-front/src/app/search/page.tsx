@@ -11,8 +11,8 @@ interface HomeProps {
   quizes: { _id: string, header: t_quizHeader }[];
 }
 
-async function Home() {
 
+async function Search() {
   // Fix: Access response.data directly for quizes
   const response = await axios.get(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/user-quiz/quizes?username=imed");
   const quizes: HomeProps = response.data; // Use response.data
@@ -24,17 +24,7 @@ async function Home() {
   return (
     <div className="p-4 flex min-h-screen">
       <div className='lg:max-w-[90%]'>
-        {/* Recent Section (next update)
-        <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-700 mb-4">Recent</h2>
-          <div className="flex flex-wrap gap-5">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <QuizItem key={`recent-${index}`} quizHeader={test1} />
-            ))}
-          </div>
-        </div> */}
 
-        {/* Solve Next Section */}
         <div>
           <h2 className="text-lg font-bold text-gray-700 mb-4">Solve Next</h2>
           <div className="flex justify-start w-full flex-wrap gap-2">
@@ -50,4 +40,6 @@ async function Home() {
   );
 }
 
-export default Home;
+
+export default Search
+

@@ -29,7 +29,11 @@ const NavBar = () => {
 
   useEffect(() => {
     //fetch search data
-    setSearchData(["test1", "test2", "test3", "test4", "test5"]);
+    async function fetchData() {
+      const data = await axios.get(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/quiz/search?query=" + searchQuery);
+      setSearchData(data.data);
+    }
+    fetchData();
   }, [searchQuery])
 
 
@@ -63,7 +67,7 @@ const NavBar = () => {
                 </button>
                 <div className="hidden md:flex flex-col items-center px-3 py-1.5 rounded-lg ">
                   <FaSearch className="text-gray-400 block mr-2 md:hidden" />
-                  <AutoComplete />
+                  <AutoComplete setSearchQuery={setSearchQuery} searchQuery={searchQuery} searchData={SearchData} />
                 </div>
               </div>
 
