@@ -31,10 +31,18 @@ function QuizItem({ quizHeader }: QuizItemProps) {
       </div>
 
       {/* Last Line */}
+
       <div className="text-sm text-gray-700">
-        Avg Score: <span className="font-medium">{quizHeader.avgScore}%</span>
+        {quizHeader.numberOfAttempts === 0 ? (
+          <span className='font-medium'>"First attempt"</span>
+        ) : (
+          <>
+            {"Avg Score: "}
+            <span className="font-medium">{(quizHeader.totalScore / quizHeader.numberOfAttempts).toFixed(2)}%</span>
+          </>
+        )}
       </div>
-    </div>
+    </div >
   );
 }
 

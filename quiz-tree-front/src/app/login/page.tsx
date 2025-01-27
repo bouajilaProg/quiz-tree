@@ -1,7 +1,7 @@
 "use client";
 import axios from 'axios';
 import { config } from 'dotenv';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { userContext } from '../contexts/userProvider';
 import { useRouter } from 'next/navigation';
 
@@ -21,11 +21,12 @@ const Login = () => {
     password: "",
   });
 
+  useEffect(() => {
+    if (loggedIn) {
+      router.push('/home?username=' + useUser.user);
+    }
+  }, [loggedIn, useUser.user, router]);
 
-
-  if (loggedIn) {
-    router.push('/home?username=' + useUser.user);
-  }
 
   const [formError, setFormError] = React.useState<boolean>(false);
 
@@ -38,7 +39,7 @@ const Login = () => {
 
   async function handleLoginSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(loginBody);
+    alert(loginBody.email + " " + loginBody.password);
     try {
 
       const { token, username } = (await axios.post(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/auth/login", loginBody)).data
@@ -48,6 +49,7 @@ const Login = () => {
       setLoggedIn(true);
     } catch (err) {
       console.log(err)
+      alert(err)
       setFormError(true);
     }
   }

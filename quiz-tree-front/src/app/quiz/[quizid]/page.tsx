@@ -1,10 +1,12 @@
 "use client";
 
-import quizes from '@/app/fakeData/quiz';
+import { userContext } from '@/app/contexts/userProvider';
 import { t_quizItem } from '@/app/types/quizItem';
 import { td_quizItem } from '@/app/typesDefault';
+import axios from 'axios';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import React, { useContext, useEffect } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 
@@ -15,12 +17,19 @@ const QuizPage: React.FC = () => {
   const [selectedOptions, setSelectedOptions] = React.useState<number[]>([]);
   const [score, setScore] = React.useState<number>(0);
 
+  const { user } = useContext(userContext);
 
+
+  const { quizid } = useParams();
   let progress = (currentQuestion / (quiz.header.questionsCount) * 100);
   useEffect(() => {
     // Fetch Questions
-    const testQuiz: t_quizItem = quizes[0];
-    setQuiz(testQuiz);
+    async function fetchQuiz() {
+
+      const quizData = (await axios.get(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/quiz/single?quizId=" + quizid)).data.quiz;
+      setQuiz(quizData);
+    }
+    fetchQuiz()
 
   }, []);
 
@@ -28,16 +37,14 @@ const QuizPage: React.FC = () => {
   const checkRight = (options: number[]) => {
     let correctOptions = quiz.questions[currentQuestion].correctOption;
 
+
+
     // Ensure correctOptions is an array
-    if (!Array.isArray(correctOptions)) {
-      correctOptions = [correctOptions];
-    }
 
     let score = options.filter(option => correctOptions.includes(option)).length;
 
     // The answer is correct if all correct options are selected and no extra ones
     if (score === correctOptions.length && options.length === correctOptions.length) {
-      console.log("Correct");
       return 1;
     }
 
@@ -48,11 +55,8 @@ const QuizPage: React.FC = () => {
 
   function handleNextQuestion(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    console.log("Next Question");
     setScore(score => score + checkRight(selectedOptions));
     setCurrentQuestion(currentQuestion + 1);
-    console.log(score);
-    console.log(selectedOptions, "==", quiz.questions[currentQuestion].correctOption);
   }
 
   function handleOptionChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -65,8 +69,22 @@ const QuizPage: React.FC = () => {
       setSelectedOptions([...selectedOptions, option]);
       debugSelectedOptions = [...selectedOptions, option];
     }
+  }
 
-    console.log(debugSelectedOptions);
+  //on end of quiz
+  if (currentQuestion === quiz.header.questionsCount) {
+    //send request to user-quiz to save the score
+    axios.post(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/user-quiz/save-score", {
+      quizId: quizid,
+      score: score,
+      username: user
+    });
+
+    //send request to quiz to update avg score
+    axios.put(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/quiz/update-solve", {
+      quizId: quizid,
+      score: score,
+    });
   }
 
   return (
@@ -107,10 +125,10 @@ const QuizPage: React.FC = () => {
 
             <div className="hidden lg:flex w-full  mt-10 text-lg">
               <div className="flex flex-col gap-4 w-1/2">
-                {["Option 1", "Option 2", "Option 3", "Option 4 "].map((option, index) => (
+                {quiz.questions[currentQuestion].options.map((option, index) => (
                   <label key={index} className="flex items-center gap-3 justify-between hover:bg-gray-100 rounded-lg p-4 transition-all duration-300">
                     <span className="text-xl text-gray-800">{option}</span>
-                    <input type="checkbox" className="w-8 h-8" onChange={handleOptionChange} />
+                    <input type="checkbox" className="w-8 h-8" value={index} onChange={handleOptionChange} />
                   </label>
                 ))}
 
@@ -134,7 +152,7 @@ const QuizPage: React.FC = () => {
               <span className="text-[12rem] lg:text-[15rem] font-bold text-gray-800">{(score / quiz.header.questionsCount) * 100}%</span>
             </div>
             <div className="flex flex-col lg:flex-row gap-4 w-full max-w-md lg:max-w-2xl lg:justify-center">
-              <Link href={"/home"} className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300 w-full lg:flex-1 text-center">
+              <Link href={"/home"} className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300 w-full lg:flex-1 block lg:py-6 text-center">
                 Continue
               </Link>
               <button className="px-6 py-3 bg-gray-400 text-gray-700 rounded-lg shadow-md cursor-not-allowed w-full lg:flex-1">

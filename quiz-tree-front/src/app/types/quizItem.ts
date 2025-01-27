@@ -4,7 +4,8 @@ export interface t_quizHeader {
   difficulty: string;
   uploaded: string;
   questionsCount: number;
-  avgScore: number;
+  totalScore: number;
+  numberOfAttempts: number;
 }
 
 
@@ -17,6 +18,10 @@ export interface t_quizQuestion {
 
 
 export interface t_quizItem {
+  _id: string | undefined;
   header: t_quizHeader;
   questions: t_quizQuestion[];
 }
+
+
+

@@ -1,33 +1,30 @@
+"use server";
+
 import React from 'react';
 import { t_quizHeader } from '../types/quizItem';
 import QuizItem from '@/components/commun/quizItem';
-
-function Home() {
-
-  const test1: t_quizHeader = {
-    topic: 'Test Topic',
-    code: '123',
-    difficulty: 'Hard',
-    uploaded: '2021-09-01',
-    questionsCount: 10,
-    avgScore: 80
-  }
+import Link from 'next/link';
+import axios from 'axios';
 
 
-  const test2: t_quizHeader = {
-    topic: 'Test Topic 2',
-    code: '16960',
-    difficulty: 'easy',
-    uploaded: '2021-10-01',
-    questionsCount: 16,
-    avgScore: 72
-  }
+interface HomeProps {
+  quizes: { _id: string, header: t_quizHeader }[];
+}
+
+async function Home() {
+
+  // Fix: Access response.data directly for quizes
+  const response = await axios.get(process.env.NEXT_PUBLIC_NOT_SECRET_BACKEND_URL + "/user-quiz/quizes?username=imed");
+  const quizes: HomeProps = response.data; // Use response.data
+
+  //debug
+  console.log(quizes.quizes.map((quiz) => quiz));
 
 
   return (
-    <div className="p-4 flex justify-center min-h-screen">
+    <div className="p-4 flex min-h-screen">
       <div className='lg:max-w-[90%]'>
-        {/* Recent Section */}
+        {/* Recent Section (next update)
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-700 mb-4">Recent</h2>
           <div className="flex flex-wrap gap-5">
@@ -35,14 +32,16 @@ function Home() {
               <QuizItem key={`recent-${index}`} quizHeader={test1} />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Solve Next Section */}
         <div>
           <h2 className="text-lg font-bold text-gray-700 mb-4">Solve Next</h2>
-          <div className="flex flex-wrap gap-5">
-            {Array.from({ length: 12 }).map((_, index) => (
-              <QuizItem key={`solve-next-${index}`} quizHeader={test2} />
+          <div className="flex justify-start w-full flex-wrap gap-2">
+            {quizes.quizes.map((quiz, index) => (
+              <Link key={`solve-next-${index}`} className="flex flex-wrap gap-5" href={`/quiz/${quiz._id}`}>
+                <QuizItem quizHeader={quiz.header} />
+              </Link>
             ))}
           </div>
         </div>
